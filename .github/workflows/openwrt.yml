@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: install requirements
         run: |
-          apt-get install build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip
+          sudo apt-get install build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip
       - name: Print pwd
         run: |
           uname -a
