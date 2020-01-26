@@ -175,6 +175,9 @@ ramips_board_detect() {
 	*"E1700")
 		name="e1700"
 		;;
+	*"E700")
+		name="e700"
+		;;		
 	*"ESR-9753")
 		name="esr-9753"
 		;;

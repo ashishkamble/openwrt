@@ -10,7 +10,7 @@
 	model = "GL-MT300A";
 
 	chosen {
-		bootargs = "console=ttyS0,115200";
+		bootargs = "console=ttyS0,57600";
 	};
 
 	gpio-leds {
@@ -132,7 +132,7 @@
 
 &ethernet {
 	mtd-mac-address = <&factory 0x4000>;
-	mediatek,portmap = "wllll";
+	mediatek,portmap = "llllw";
 };
 
 &wmac {

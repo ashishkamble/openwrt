@@ -1,0 +1,177 @@
+/dts-v1/;
+
+#include "mt7620a.dtsi"
+
+#include <dt-bindings/input/input.h>
+
+/ {
+	compatible = "e700", "ralink,mt7620a-soc";
+	model = "Maestro E700";
+
+	uart {
+		status = "okay";
+	};
+
+	gpio-keys-polled {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		poll-interval = <20>;
+
+		reset {
+			label = "reset";
+			gpios = <&gpio0 22 1>;
+			linux,code = <0x198>;
+		};
+	};
+
+	gpio_export{
+		compatible = "gpio-export";
+		#size-cells = <0>;
+
+		simswitch {
+			gpio-export,name = "sim-switch";
+			gpio-export,output = <0>;
+			gpios = <&gpio2 26 0>;
+		};
+
+		sim1detect {
+			gpio-export,name = "sim1-detect";
+			gpios = <&gpio2 24 1>;
+		};
+
+		sim2detect {
+			gpio-export,name = "sim2-detect";
+			gpios = <&gpio2 25 1>;
+		};
+
+	};
+	
+	gpio-leds {
+		compatible = "gpio-leds";
+		power {
+			label = "e210:green:power";
+			gpios = <&gpio2 20 1>;
+		};
+		lanactivity {
+			label = "e210:green:lanactivity";
+			gpios = <&gpio1 0 1>;
+		};
+		wanactivity {
+			label = "e210:green:wanactivity";
+			gpios = <&gpio1 1 1>;
+		};
+		wwanactivity {
+			label = "e210:blue:wwanactivity";
+			gpios = <&gpio3 0 1>;
+		};
+		network {
+			label = "e210:orange:network";
+			gpios = <&gpio1 2 1>;
+		};
+		activity {
+			label = "e210:orange:activity";
+			gpios = <&gpio1 3 1>;
+		};
+		signal {
+			label = "e210:orange:signal";
+			gpios = <&gpio1 4 1>;
+		};
+		simstatus {
+			label = "e210:blue:simstatus";
+			gpios = <&gpio2 23 1>;
+		};
+		system {
+			label = "e210:red:system";
+			gpios = <&gpio1 5 1>;
+		};
+	};
+};
+
+&spi0 {
+	status = "okay";
+
+	m25p80@0 {
+        #address-cells = <1>;
+        #size-cells = <1>;
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <10000000>;
+
+	    partition@0 {
+		    label = "u-boot";
+		    reg = <0x0 0x30000>;
+		    read-only;
+	    };
+
+	    partition@30000 {
+		    label = "u-boot-env";
+		    reg = <0x30000 0x10000>;
+		    read-only;
+	    };
+
+	    factory: partition@40000 {
+		    label = "factory";
+		    reg = <0x40000 0x10000>;
+		    read-only;
+	    };
+
+	    partition@50000 {
+		    label = "firmware";
+		    reg = <0x50000 0x3FB0000>;
+	    };
+	};
+};
+
+&gpio1 {
+	status = "okay";
+};
+&gpio2 {
+	status = "okay";
+};
+&gpio3 {
+	status = "okay";
+};
+&pinctrl {
+	state_default: pinctrl0 {
+		gpio {
+			ralink,group = "wled","rgmii1","rgmii2","mdio";
+			ralink,function = "gpio";
+		};
+	};
+};
+
+&i2c {
+	status = "okay";
+	rtc@6f {
+		compatible = "mcp,mcp7940";
+		reg = <0x6f>;
+	};
+
+};
+
+&ethernet {
+	status = "okay";
+	pinctrl-names = "default";
+	mediatek,portmap = "llllw";
+	mtd-mac-address = <&factory 0x28>;
+};
+
+&wmac {
+	ralink,mtd-eeprom = <&factory 0>;
+};
+&sdhci {
+	status = "okay";
+};
+
+&pcie {
+	status = "okay";
+};
+
+&ehci {
+	status = "okay";
+};
+
+&ohci {
+	status = "okay";
+};

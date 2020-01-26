@@ -252,6 +252,23 @@ define Device/gl-mt300n
 endef
 TARGET_DEVICES += gl-mt300n
 
+define Device/e700_x
+  DTS := E700
+  IMAGES += factory.bin
+  IMAGE/factory.bin := $$(sysupgrade_bin) | check-size $$$$(IMAGE_SIZE) | \
+  		umedia-header 0x013326
+  DEVICE_TITLE := MAESTRO E700_x
+endef
+TARGET_DEVICES += e700_x
+
+define Device/e700
+  DTS := E700
+  IMAGE_SIZE := $(ralink_default_fw_size_16M)
+  DEVICE_TITLE := MAESTRO E700
+  DEVICE_PACKAGES := kmod-usb2 kmod-usb-ohci kmod-mt76
+endef
+TARGET_DEVICES += e700
+
 define Device/gl-mt750
   DTS := GL-MT750
   IMAGE_SIZE := $(ralink_default_fw_size_16M)
